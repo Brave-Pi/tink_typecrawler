@@ -3,4 +3,5 @@ tests.hxml
 -js bin/test.js
 
 -lib travix
--lib tink_typecrawler
+-cp src
+# -lib tink_typecrawler

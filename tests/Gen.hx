@@ -2,8 +2,8 @@ package;
 
 import haxe.macro.Expr;
 import haxe.macro.Type;
-import tink.typecrawler.Generator;
-import tink.typecrawler.FieldInfo;
+import tink.typegen.Generator;
+import tink.typegen.FieldInfo;
 
 using tink.MacroApi;
 using tink.CoreApi;

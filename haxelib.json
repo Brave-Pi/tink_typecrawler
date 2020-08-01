@@ -1,5 +1,5 @@
 {
-	"name": "tink_typecrawler",
+	"name": "tink_typegen",
 	"classPath": "src",
 	"dependencies": {
 		"tink_macro": ""

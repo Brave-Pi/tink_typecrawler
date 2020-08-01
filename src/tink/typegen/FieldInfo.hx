@@ -1,4 +1,4 @@
-package tink.typecrawler;
+package tink.typegen;
 
 import haxe.macro.Expr;
 import haxe.macro.Type;
