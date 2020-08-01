@@ -1,6 +1,6 @@
 tests.hxml
 
--neko bin/neko
+-js bin/test.js
 
 -lib travix
 -lib tink_typecrawler

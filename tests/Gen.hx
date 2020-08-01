@@ -10,23 +10,22 @@ using tink.CoreApi;
 
 class Gen {
   public function new() {}
-  public function wrap(placeholder:Expr, ct:ComplexType):Function return throw 'abstract';
-  public function nullable(e:Expr):Expr return throw 'abstract';
-  public function string():Expr return throw 'abstract';
-  public function float():Expr return throw 'abstract';
-  public function int():Expr return throw 'abstract';
-  public function dyn(e:Expr, ct:ComplexType):Expr return throw 'abstract';
-  public function dynAccess(e:Expr):Expr return throw 'abstract';
-  public function bool():Expr return throw 'abstract';
-  public function date():Expr return throw 'abstract';
-  public function bytes():Expr return throw 'abstract';
-  public function anon(fields:Array<FieldInfo>, ct:ComplexType):Expr return throw 'abstract';
-  public function array(e:Expr):Expr return throw 'abstract';
-  public function map(k:Expr, v:Expr):Expr return throw 'abstract';
-  public function enm(constructors:Array<EnumConstructor>, ct:ComplexType, pos:Position, gen:GenType):Expr return throw 'abstract';
-  public function enumAbstract(names:Array<Expr>, e:Expr, ct:ComplexType, pos:Position):Expr return throw 'abstract';
-  public function rescue(t:Type, pos:Position, gen:GenType):Option<Expr> return throw 'abstract';
+  public function nullable(e:Array<Field>):Array<Field> return throw 'abstract';
+  public function string():Array<Field> return throw 'abstract';
+  public function float():Array<Field> return throw 'abstract';
+  public function int():Array<Field> return throw 'abstract';
+  public function dyn(e:Array<Field>, ct:ComplexType):Array<Field> return throw 'abstract';
+  public function dynAccess(e:Array<Field>):Array<Field> return throw 'abstract';
+  public function bool():Array<Field> return throw 'abstract';
+  public function date():Array<Field> return throw 'abstract';
+  public function bytes():Array<Field> return throw 'abstract';
+  public function anon(fields:Array<FieldInfo<Array<Field>>>, ct:ComplexType):Array<Field> return throw 'abstract';
+  public function array(e:Array<Field>):Array<Field> return throw 'abstract';
+  public function map(k:Type, v:Array<Field>):Array<Field> return throw 'abstract';
+  public function enm(constructors:Array<EnumConstructor<Array<Field>>>, ct:ComplexType, pos:Position, gen:GenType<Array<Field>>):Array<Field> return throw 'abstract';
+  public function enumAbstract(names:Array<Expr>, e:Array<Field>, ct:ComplexType, pos:Position):Array<Field> return throw 'abstract';
+  public function rescue(t:Type, pos:Position, gen:GenType<Array<Field>>):Option<Array<Field>> return throw 'abstract';
   public function reject(t:Type):String return throw 'abstract';
   public function shouldIncludeField(c:ClassField, owner:Option<ClassType>):Bool return true;
-  public function drive(type:Type, pos:Position, gen:GenType):Expr return gen(type, pos);
+  public function drive(type:Type, pos:Position, gen:GenType<Array<Field>>):Array<Field> return gen(type, pos);
 }

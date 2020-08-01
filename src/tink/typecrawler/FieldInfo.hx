@@ -10,24 +10,24 @@ typedef FieldAccessInfo = {
   var set(default, never):String;
 }
 
-class FieldInfo {
+class FieldInfo<T> {
   public var name(default, null):String;
   public var pos(default, null):Position;
   public var type(default, null):Type;
   public var access(default, null):FieldAccessInfo;
 
-  public var expr(get, null):Expr;
-    function get_expr() return switch expr {
-      case null: expr = as(type);
+  public var generated(get, null):T;
+    function get_generated() return switch generated {
+      case null: generated = as(type);
       case v: v;
     }
 
   public var optional(default, null):Bool;
   public var meta(default, null):Metadata;
 
-  var gen:Generator.GenType;
+  var gen:Generator.GenType<T>;
 
-  public function as(type:Type):Expr
+  public function as(type:Type):T
     return gen(type, pos);
 
   public function new(o, gen, optional, meta, ?access) {

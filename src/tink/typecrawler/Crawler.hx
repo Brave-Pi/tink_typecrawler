@@ -10,75 +10,44 @@ using tink.MacroApi;
 using tink.CoreApi;
 
 @:callable
-abstract GeneratorProvider(Crawler->Generator) from Crawler->Generator {
-  @:from static function fromGenerator(g:Generator):GeneratorProvider
+abstract GeneratorProvider<T>(Crawler<T>->Generator<T>) from Crawler<T>->Generator<T> {
+  @:from static function fromGenerator<T>(g:Generator<T>):GeneratorProvider<T>
     return function (_) return g;
 }
 
-class Crawler {
+class Crawler<T> {
 
   var ret:Array<Field> = [];
-  var gen:Generator;
+  var gen:Generator<T>;
   var cacheSize = 0;
-  var cache = new tink.macro.TypeMap<Expr>(function (t) return t);
+  var cache = new tink.macro.TypeMap<T>(function (t) return t);
 
-  static public function crawl(type:Type, pos:Position, gen:GeneratorProvider) {
+  static public function crawl<T>(type:Type, pos:Position, gen:GeneratorProvider<T>) {
     var c = new Crawler(gen);
 
-    var expr = c.genType(type, pos);
+    var ret = c.genType(type, pos);
 
     return {
-      expr: expr,
-      fields: c.ret,
+      ret: ret,
     }
   }
 
-  public function add(td:TypeDefinition) {
-    for (t in td.fields)
-      ret.push(t);
-    return td.fields;
-  }
-
-  public function cached(t:Type, pos:Position, make:Int->Expr)
+  public function cached(t:Type, pos:Position, make:Int->T)
     return switch cache.get(t) {
       case null:
         var id = cacheSize++;
-        var method = 'process${id}';
-
-        var placeholder = macro @:pos(pos) null;
-
-        var ct = t.toComplex();
-        var func = gen.wrap(placeholder, t.toComplex());
-        var args = [for (a in func.args) a.name.resolve()];
-
-        var call = macro @:pos(pos) this.$method($a{args});
-        cache.set(t, call);
-
-        ret.push({
-          name: method,
-          pos: pos,
-          kind: FFun(func),
-        });
-
-        var impl = make(id);
-
-        placeholder.expr = impl.expr;
-        placeholder.pos = impl.pos;
-
-        call;
+        make(id);
       case v: v;
     }
 
-  var methodCalls = new Map<String, Expr>();
-
-  function new(gen:GeneratorProvider) {
+  function new(gen:GeneratorProvider<T>) {
     this.gen = gen(this);
   }
 
-  function genType(t:Type, pos:Position):Expr
+  function genType(t:Type, pos:Position):T
     return gen.drive(t, pos, doGenType);
 
-  function doGenType(t:Type, pos:Position):Expr
+  function doGenType(t:Type, pos:Position):T
     return
       if (t.getID(false) == 'Null')
         gen.nullable(genType(t.reduce(true), pos));
@@ -136,7 +105,7 @@ class Crawler {
 
           case TAbstract(_.get() => { name: 'Map', pack: [] | ['haxe', 'ds']}, [k, v]):
 
-            gen.map(genType(k, pos), genType(v, pos));
+            gen.map(k, genType(v, pos));
 
           case plainAbstract(_) => Some(a):
 
@@ -184,10 +153,10 @@ class Crawler {
 
         }
 
-  function convertField(f:ClassField):FieldInfo
+  function convertField(f:ClassField):FieldInfo<T>
     return FieldInfo.ofClassField(f, genType);
 
-  function makeInfo(part, optional, meta):FieldInfo
+  function makeInfo(part, optional, meta):FieldInfo<T>
     return new FieldInfo(part, genType, optional, meta);
 
   static public function typesEqual(t1, t2)
