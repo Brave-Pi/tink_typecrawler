@@ -21,8 +21,8 @@ typedef Generator<T> = {
 	function date():T;
 	function bytes():T;
 	function anon(fields:Array<FieldInfo<T>>, ct:ComplexType):T;
-	function array(e:T):T;
-	function map(k:Type, v:T):T;
+	function array(e:Type):T;
+	function map(k:Type, v:Type):T;
 	function enm(constructors:Array<EnumConstructor<T>>, ct:ComplexType, pos:Position, gen:GenType<T>):T;
 	function enumAbstract(names:Array<Expr>, e:T, ct:ComplexType, pos:Position):T;
 	function rescue(t:Type, pos:Position, gen:GenType<T>):Option<T>;

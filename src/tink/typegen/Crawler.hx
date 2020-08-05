@@ -83,7 +83,7 @@ class Crawler<T> {
 
           case TInst(_.get() => { name: 'Array', pack: [] }, [t]):
 
-            gen.array(genType(t, pos));
+            gen.array(t);
 
           case TDynamic(t) if (t != null):
 
@@ -105,7 +105,7 @@ class Crawler<T> {
 
           case TAbstract(_.get() => { name: 'Map', pack: [] | ['haxe', 'ds']}, [k, v]):
 
-            gen.map(k, genType(v, pos));
+            gen.map(k, v);
 
           case plainAbstract(_) => Some(a):
 
