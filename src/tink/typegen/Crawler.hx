@@ -87,7 +87,7 @@ class Crawler<T> {
 
           case TDynamic(t) if (t != null):
 
-            gen.dyn(gen.dynAccess(genType(t, pos)), t.toComplex());
+            gen.dyn(t, t.toComplex());
 
           case TAbstract(_.get() => {meta: meta, impl: impl, type: underlying, name: name, module: module}, _) if(meta.has(':enum')):
 

@@ -15,7 +15,7 @@ typedef Generator<T> = {
 	function string():T;
 	function float():T;
 	function int():T;
-	function dyn(e:T, ct:ComplexType):T;
+	function dyn(e:Type, ct:ComplexType):T;
 	function dynAccess(e:T):T;
 	function bool():T;
 	function date():T;
